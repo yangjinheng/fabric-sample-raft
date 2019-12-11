@@ -1,0 +1,9 @@
+{
+    "network-configs": {
+        "baas-network": {
+            "name": "baas-network",
+            "profile": "./connection-profile/baas-network.json"
+        }
+    },
+    "license": "Apache-2.0"
+}

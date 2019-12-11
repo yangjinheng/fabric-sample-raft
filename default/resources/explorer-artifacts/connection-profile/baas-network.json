@@ -1,0 +1,131 @@
+{
+	"name": "baas-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": false,
+		"adminUser": "admin",
+		"adminPassword": "adminpw",
+		"enableAuthentication": false,
+		"organization": "Org1MSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"qloudchain-channel": {
+			"peers": {
+				"peer0.org1.qloudchain.com": {},
+				"peer0.org2.qloudchain.com": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"Org1MSP": {
+			"mspid": "Org1MSP",
+			"fullpath": true,
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/org1.qloudchain.com/users/Admin@org1.qloudchain.com/msp/keystore/ecf85e74c27e2aac9f9469d6d647162e590f564d8e79f44c5a7e5101851d334d_sk"
+			},
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/org1.qloudchain.com/users/Admin@org1.qloudchain.com/msp/signcerts/Admin@org1.qloudchain.com-cert.pem"
+			},
+			"certificateAuthorities": [
+				"ca.org1.qloudchain.com"
+			],
+			"peers": [
+				"peer0.org1.qloudchain.com"
+			]
+		},
+		"Org2MSP": {
+			"mspid": "Org2MSP",
+			"fullpath": true,
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/org2.qloudchain.com/users/Admin@org2.qloudchain.com/msp/keystore/f6fe07962af0eb590072a2603f6d32c55c5a651097ce2b12491d296d09be590d_sk"
+			},
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/org2.qloudchain.com/users/Admin@org2.qloudchain.com/msp/signcerts/Admin@org2.qloudchain.com-cert.pem"
+			},
+			"certificateAuthorities": [
+				"ca.org2.qloudchain.com"
+			],
+			"peers": [
+				"peer0.org2.qloudchain.com"
+			]
+		},
+		"OrdererMSP": {
+			"mspid": "OrdererMSP",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/ordererOrganizations/qloudchain.com/users/Admin@qloudchain.com/msp/keystore/2984e26b1e43e4fde409b25b147e4db75734f9ecd5018113159d24a64c3f4593_sk"
+			}
+		}
+	},
+	"peers": {
+		"peer0.org1.qloudchain.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1.qloudchain.com/peers/peer0.org1.qloudchain.com/tls/ca.crt"
+			},
+			"url": "grpc://peer0-org1:7051",
+			"eventUrl": "grpc://peer0-org1:7053",
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.org1.qloudchain.com"
+			}
+		},
+		"peer0.org2.qloudchain.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org2.qloudchain.com/peers/peer0.org2.qloudchain.com/tls/ca.crt"
+			},
+			"url": "grpc://peer0-org2:7051",
+			"eventUrl": "grpc://peer0-org2:7053",
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.org2.qloudchain.com"
+			}
+		},
+		"orderers": {
+			"orderer0.qloudchain.com": {
+				"url": "grpc://orderer0:7050"
+			},
+			"orderer1.qloudchain.com": {
+				"url": "grpc://orderer1:7050"
+			},
+			"orderer2.qloudchain.com": {
+				"url": "grpc://orderer2:7050"
+			}
+		},
+		"certificateAuthorities": {
+			"ca.org1.qloudchain.com": {
+				"url": "http://ca-org1:7054",
+				"httpOptions": {
+					"verify": false
+				},
+				"tlsCACerts": {
+					"path": "/tmp/crypto/peerOrganizations/org1.qloudchain.com/ca/ca.org1.qloudchain.com-cert.pem"
+				},
+				"caName": "ca.org1.qloudchain.com"
+			},
+			"ca.org2.qloudchain.com": {
+				"url": "http://ca-org2:7054",
+				"httpOptions": {
+					"verify": false
+				},
+				"tlsCACerts": {
+					"path": "/tmp/crypto/peerOrganizations/org2.qloudchain.com/ca/ca.org2.qloudchain.com-cert.pem"
+				},
+				"caName": "ca.org2.qloudchain.com"
+			}
+		}
+	}
+}

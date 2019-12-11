@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: ca-org1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperledger
+      role: ca
+      org: org1
+      name: ca
+  template:
+    metadata:
+      labels:
+        app: hyperledger
+        role: ca
+        org: org1
+        name: ca
+    spec:
+      containers:
+        - name: ca
+          image: hyperledger/fabric-ca:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GODEBUG
+              value: netdns=go
+            - name: FABRIC_CA_HOME
+              value: /etc/hyperledger/fabric-ca-server
+            - name: FABRIC_CA_SERVER_CA_NAME
+              value: ca.org1.example.com
+            - name: FABRIC_CA_SERVER_PORT
+              value: "7054"
+            - name:  FABRIC_CA_SERVER_TLS_ENABLED
+              value: "true"
+            # - name:  FABRIC_CA_SERVER_TLS_CERTFILE
+            #   value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+            # - name:  FABRIC_CA_SERVER_TLS_KEYFILE
+            #   value: /etc/hyperledger/fabric-ca-server-config/2decb44f78125aecc7c87933098d900938626415a9d937a251968183abd2209d_sk
+          ports:
+            - containerPort: 7054
+          command: ["sh", "-c"]
+          args:
+            - "fabric-ca-server start -b admin:adminpw -d --ca.certfile /etc/hyperledger/fabric-ca-server-config/*cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/*_sk"
+          volumeMounts:
+            - mountPath: /etc/hyperledger/fabric-ca-server-config
+              name: certificate
+              subPath: crypto-config/peerOrganizations/org1.example.com/ca/
+            #- mountPath: /etc/hyperledger/fabric-ca-server
+            #  name: certificate
+            #  subPath: fabric-ca-server/
+      volumes:
+        - name: certificate
+          persistentVolumeClaim:
+            claimName: default-resources-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: ca-org1
+spec:
+  selector:
+    app: hyperledger
+    role: ca
+    org: org1
+    name: ca
+  type: NodePort
+  ports:
+    - name: endpoint
+      protocol: TCP
+      port: 7054
+      targetPort: 7054
+      nodePort: 30100

@@ -1,0 +1,92 @@
+-------------------------------------- orderer --------------------------------------
+orderer0
+    nodePort: 30001
+orderer1
+    nodePort: 30002
+orderer2
+    nodePort: 30003
+
+-------------------------------------- org1 --------------------------------------
+ca-org1
+    nodePort: 30100
+
+peer0-org1
+    externalPort
+        nodePort: 30101
+    chaincodePort
+        nodePort: 30102
+    nodePort:
+        nodePort: 30103
+
+peer1-org1
+    externalPort
+        nodePort: 30104
+    chaincodePort
+        nodePort: 30105
+    nodePort:
+        nodePort: 30106
+
+peer2-org1
+    externalPort
+        nodePort: 30107
+    chaincodePort
+        nodePort: 30108
+    nodePort:
+        nodePort: 30109
+
+peer3-org1
+    externalPort
+        nodePort: 30110
+    chaincodePort
+        nodePort: 30111
+    nodePort:
+        nodePort: 30112
+
+------------------------------------- org2 --------------------------------------
+ca-org2
+    nodePort: 30200
+
+peer0-org2
+    externalPort
+        nodePort: 30201
+    chaincodePort
+        nodePort: 30202
+    nodePort:
+        nodePort: 30203
+
+peer1-org2
+    externalPort
+        nodePort: 30204
+    chaincodePort
+        nodePort: 30205
+    nodePort:
+        nodePort: 30206
+        
+peer1-org2
+    externalPort
+        nodePort: 30207
+    chaincodePort
+        nodePort: 30208
+    nodePort:
+        nodePort: 30209
+
+peer1-org2
+    externalPort
+        nodePort: 30210
+    chaincodePort
+        nodePort: 30211
+    nodePort:
+        nodePort: 30212
+
+------------------------------------- 启动顺序 --------------------------------------
+1. namespace
+
+2. pvc
+
+3. orderer0
+
+4. peer
+
+5. ca
+
+6. cli

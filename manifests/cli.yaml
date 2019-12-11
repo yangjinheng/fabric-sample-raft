@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cli
+  template:
+    metadata:
+      labels:
+        app: cli
+    spec:
+      containers:
+        - name: cli
+          image: hyperledger/fabric-tools:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GODEBUG
+              value: netdns=go
+            - name: GOPATH
+              value: /opt/gopath
+            - name: FABRIC_LOGGING_SPEC
+              value: DEBUG
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+          command: ["/bin/bash", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
+          volumeMounts:
+            - name: run
+              mountPath: /host/var/run/
+            - name: resources
+              subPath: crypto-config
+              mountPath: /etc/hyperledger/fabric/crypto-config
+            - name: resources
+              subPath: channel-artifacts
+              mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/resources/channel-artifacts
+            - name: resources
+              subPath: chaincodes
+              mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/resources/chaincodes
+      volumes:
+        - name: resources
+          persistentVolumeClaim:
+            claimName: default-resources-pvc
+        - name: run
+          hostPath:
+            path: /var/run

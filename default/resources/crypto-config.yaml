@@ -1,0 +1,53 @@
+OrdererOrgs:
+  - Name: orderer
+    Domain: example.com
+    CA:
+      Country: CN
+      Province: Beijing
+      Locality: Beijing
+    Specs:
+      - Hostname: orderer0
+        SANS:
+          - orderer0
+      - Hostname: orderer1
+        SANS:
+          - orderer1
+      - Hostname: orderer2
+        SANS:
+          - orderer2
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.example.com
+    EnableNodeOUs: true
+    CA:
+      Country: CN
+      Province: Beijing
+      Locality: Beijing
+    Specs:
+      - Hostname: peer0
+        SANS:
+          - peer0-org1
+      - Hostname: peer1
+        SANS:
+          - peer1-org1
+    Users:
+      Count: 1
+
+  - Name: Org2
+    Domain: org2.example.com
+    EnableNodeOUs: true
+    CA:
+      Country: CN
+      Province: Beijing
+      Locality: Beijing
+    Specs:
+      - Hostname: peer0
+        SANS:
+          - peer0-org2
+      - Hostname: peer1
+        SANS:
+          - peer1-org2
+    Users:
+      Count: 1
+

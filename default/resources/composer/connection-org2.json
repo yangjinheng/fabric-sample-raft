@@ -1,0 +1,155 @@
+{
+    "name": "fabric-network-org2",
+    "x-type": "hlfv1",
+    "x-commitTimeout": 300,
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org2",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "1200",
+                    "eventHub": "1200",
+                    "eventReg": "1200"
+                },
+                "orderer": "1200"
+            }
+        }
+    },
+    "channels": {
+        "mychannel": {
+            "orderers": [
+                "orderer0.example.com",
+                "orderer1.example.com",
+                "orderer2.example.com"
+            ],
+            "peers": {
+                "peer0.org1.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                },
+                "peer0.org2.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                },
+                "peer1.org1.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                },
+                "peer1.org2.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org1": {
+            "mspid": "Org1MSP",
+            "peers": [
+                "peer0.org1.example.com",
+                "peer1.org1.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.org1.example.com"
+            ]
+        },
+        "Org2": {
+            "mspid": "Org2MSP",
+            "peers": [
+                "peer0.org2.example.com",
+                "peer1.org2.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.org2.example.com"
+            ]
+        }
+    },
+    "orderers": {
+        "orderer0.example.com": {
+            "url": "grpcs://orderer0:7050",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.example.com"
+            }
+        },
+        "orderer1.example.com": {
+            "url": "grpcs://orderer1:7050",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer1.example.com"
+            }
+        },
+        "orderer2.example.com": {
+            "url": "grpcs://orderer2:7050",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer2.example.com"
+            }
+        }
+    },
+    "peers": {
+        "peer0.org1.example.com": {
+            "url": "grpcs://peer0-org1:7051",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org1.example.com"
+            }
+        },
+        "peer1.org1.example.com": {
+            "url": "grpcs://peer1-org1:7051",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.org1.example.com"
+            }
+        },
+        "peer0.org2.example.com": {
+            "url": "grpcs://peer0-org2:7051",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org2.example.com"
+            }
+        },
+        "peer1.org2.example.com": {
+            "url": "grpcs://peer1-org2:7051",
+            "tlsCACerts": {
+                "path": "/data/composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.org2.example.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.org1.example.com": {
+            "url": "https://ca-org1:7054",
+            "caName": "ca.org1.example.com",
+            "httpOptions": {
+                "verify": false
+            }
+        },
+        "ca.org2.example.com": {
+            "url": "https://ca-org2:7054",
+            "caName": "ca.org2.example.com",
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

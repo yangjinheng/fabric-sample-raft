@@ -1,0 +1,170 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: default-explorer-pv
+spec:
+  capacity:
+    storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs
+  claimRef:
+    namespace: default
+    name: default-explorer-pvc
+  nfs:
+    path: /default/resources/
+    server: 172.16.100.11
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: default
+  name: default-explorer-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: default
+  name: default-pgdata-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: sas
+    volume.beta.kubernetes.io/storage-provisioner: flexvolume-huawei.com/fuxivol
+  labels:
+    failure-domain.beta.kubernetes.io/region: cn-north-1
+    failure-domain.beta.kubernetes.io/zone: cn-north-1a
+spec:
+ accessModes:
+   - ReadWriteMany
+ resources:
+   requests:
+     storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: default
+  name: default-explorer-credentialstore-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: sas
+    volume.beta.kubernetes.io/storage-provisioner: flexvolume-huawei.com/fuxivol
+  labels:
+    failure-domain.beta.kubernetes.io/region: cn-north-1
+    failure-domain.beta.kubernetes.io/zone: cn-north-1a
+spec:
+ accessModes:
+   - ReadWriteMany
+ resources:
+   requests:
+     storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: fabric-explorer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: explorer
+  template:
+    metadata:
+      labels:
+        app: explorer
+    spec:
+      containers:
+        - name: mysql
+          image: reg.qloudhub.com/qloudbaas/explorer-db:0.3.9.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_DATABASE
+              value: fabricexplorer
+            - name: DATABASE_USERNAME
+              value: hppoc
+            - name: DATABASE_PASSWORD
+              value: password
+          command: ["/bin/sh", "-c", "--"]
+          args: ["rm -rf /var/lib/postgresql/data/lost+found ; /usr/local/bin/docker-entrypoint.sh postgres"]
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: explorer-resources
+              subPath: explorer-artifacts/postgreSQL/db/
+              mountPath: /docker-entrypoint-initdb.d/
+            - name: pgdata-pvc
+              mountPath: /var/lib/postgresql/data
+
+        - name: explorer
+          imagePullPolicy: IfNotPresent
+          image: reg.qloudhub.com/qloudbaas/explorer:0.3.9.5
+          env:
+            - name: DATABASE_HOST
+              value: 127.0.0.1
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_DATABASE
+              value: fabricexplorer
+            - name: DATABASE_USERNAME
+              value: hppoc
+            - name: DATABASE_PASSWD
+              value: password
+            - name: ENROLL_ID
+              value: hlbeuser
+            - name: DISCOVERY_AS_LOCALHOST
+              value: "false"
+          command: ["/bin/sh", "-c", "--"]
+          args: ["sleep 16 && node /opt/explorer/main.js && tail -f /dev/null"]
+          ports:
+            - containerPort: 8181
+          volumeMounts:
+            - name: explorer-resources
+              subPath: explorer-artifacts/config.json
+              mountPath: /opt/explorer/app/platform/fabric/config.json
+            - name: explorer-resources
+              subPath: explorer-artifacts/connection-profile
+              mountPath: /opt/explorer/app/platform/fabric/connection-profile
+            - name: explorer-resources
+              subPath: crypto-config
+              mountPath: /tmp/crypto
+            - name: explorer-credentialstore-pvc
+              mountPath: /opt/tmp
+      volumes:
+        - name: explorer-resources
+          persistentVolumeClaim:
+            claimName: default-explorer-pvc
+        - name: pgdata-pvc
+          persistentVolumeClaim:
+            claimName: default-pgdata-pvc
+        - name: explorer-credentialstore-pvc
+          persistentVolumeClaim:
+            claimName: default-explorer-credentialstore-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: default-fabric-explorer
+spec:
+  selector:
+    app: explorer
+  type: NodePort
+  ports:
+    - name: explorer-server
+      protocol: TCP
+      port: 8181
+      targetPort: 8080
+      # nodePort: {{nodePort}}

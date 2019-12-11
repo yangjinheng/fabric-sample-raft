@@ -1,0 +1,119 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: orderer2-ordererorg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperledger
+      role: orderer
+      org: ordererorg
+      orderer-id: orderer2
+  template:
+    metadata:
+      labels:
+        app: hyperledger
+        role: orderer
+        org: ordererorg
+        orderer-id: orderer2
+    spec:
+      containers:
+        - name: orderer2-ordererorg
+          image: hyperledger/fabric-orderer:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GODEBUG
+              value: netdns=go
+            - name: FABRIC_LOGGING_SPEC
+              value: INFO
+            - name: ORDERER_GENERAL_LISTENADDRESS
+              value: 0.0.0.0
+            - name: ORDERER_GENERAL_GENESISMETHOD
+              value: file
+            - name: ORDERER_GENERAL_GENESISFILE
+              value: /etc/hyperledger/configtx/genesis.block
+            - name: ORDERER_GENERAL_LOCALMSPID
+              value: OrdererMSP
+            - name: ORDERER_GENERAL_LOCALMSPDIR
+              value: /etc/hyperledger/orderer/msp
+            - name: ORDERER_GENERAL_TLS_ENABLED
+              value: "true"
+            - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+              value: /etc/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_TLS_CERTIFICATE
+              value: /etc/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_TLS_ROOTCAS
+              value: '[/etc/hyperledger/orderer/tls/ca.crt]'
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+              value: /etc/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+              value: /etc/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+              value: '[/etc/hyperledger/orderer/tls/ca.crt]'
+            - name: ORDERER_KAFKA_RETRY_SHORTINTERVAL
+              value: "5s"
+            - name: ORDERER_KAFKA_RETRY_SHORTTOTAL
+              value: "30s"
+            - name: ORDERER_KAFKA_VERBOSE
+              value: "true"
+            - name: ORDERER_KAFKA_BROKERS
+              value: "[kafka0:9092,kafka1:9092,kafka2:9092]"
+            - name: ORDERER_METRICS_PROVIDER
+              value: prometheus
+            - name: ORDERER_OPERATIONS_LISTENADDRESS
+              value: 0.0.0.0:9100
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+          ports:
+            - containerPort: 7050
+          command: ["orderer"]
+          volumeMounts:
+            - name: resources
+              subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp
+              mountPath: /etc/hyperledger/orderer/msp
+            - name: resources
+              subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls
+              mountPath: /etc/hyperledger/orderer/tls
+            - name: resources
+              subPath: channel-artifacts
+              mountPath: /etc/hyperledger/configtx
+            - name: ledgerspvc
+              mountPath: /var/hyperledger/production
+      volumes:
+        - name: resources
+          persistentVolumeClaim:
+            claimName: default-resources-pvc
+        - name: ledgerspvc
+          persistentVolumeClaim:
+            claimName: default-orderer2-ledgers-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/app-metrics: 'true'
+    prometheus.io/app-metrics-port: '9100'
+    prometheus.io/app-metrics-path: '/metrics'
+  name: orderer2
+  namespace: default
+spec:
+  selector:
+    app: hyperledger
+    role: orderer
+    orderer-id: orderer2
+    org: ordererorg
+  type: NodePort
+  ports:
+    - name: listen-endpoint
+      protocol: TCP
+      port: 7050
+      targetPort: 7050
+      nodePort: 30003
+    - name: metrics-endpoint
+      protocol: TCP
+      port: 9100
+      targetPort: 9100
