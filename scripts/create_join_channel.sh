@@ -16,7 +16,7 @@ function wait_pod() {
 }
 
 # get cli name
-CLI=`wait_pod 'cli.*' 'Running'`
+CLI=`wait_pod '^cli.*' 'Running'`
 
 CORE_PEER_TLS_ENABLED=true
 

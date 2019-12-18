@@ -33,6 +33,10 @@ spec:
               value: ca.org1.example.com
             - name: FABRIC_CA_SERVER_PORT
               value: "7054"
+            # - name: FABRIC_CA_SERVER_CA_CERTFILE
+            #   value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+            # - name: FABRIC_CA_SERVER_CA_KEYFILE
+            #   value: ${ORG1TLSCA_FABRIC_CA_SERVER_CA_KEYFILE}
             - name:  FABRIC_CA_SERVER_TLS_ENABLED
               value: "true"
             # - name:  FABRIC_CA_SERVER_TLS_CERTFILE

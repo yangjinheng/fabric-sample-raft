@@ -54,7 +54,7 @@ peer chaincode install -n mycc -v 2.0 -p github.com/hyperledger/fabric/peer/reso
 kubectl -n $NAMESPACE exec -it $CLI -- bash -c "$commands"
 
 
-# 实例化智能合约 => 100
+# 实例化智能合约
 commands=`cat <<'EOF'
 export FABRIC_LOGGING_SPEC=INFO
 export CORE_PEER_TLS_ENABLED=true
@@ -70,7 +70,7 @@ EOF
 `
 kubectl -n $NAMESPACE exec -it $CLI -- bash -c "$commands"
 
-# 交易和查询智能合约 => 70，现实是返回了 90
+# 交易和查询智能合约
 commands=`cat <<'EOF'
 export FABRIC_LOGGING_SPEC=INFO
 export CORE_PEER_TLS_ENABLED=true
