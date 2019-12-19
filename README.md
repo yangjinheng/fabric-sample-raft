@@ -39,5 +39,15 @@
 6.  Cli
 ~~~
 
+## 文件组织
 
+## 启动网络
+
+1.  生成证书
+2.  生成通道
+3.  准备NFS
+
+~~~bash
+/data *(rw,fsid=0,sync,no_subtree_check,no_auth_nlm,insecure,no_root_squash)
+~~~
 
