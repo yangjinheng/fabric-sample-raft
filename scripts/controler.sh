@@ -29,7 +29,7 @@ services=(
 function wait_pvc() {
     printf "Wait for pvc to be ready..."
     while sleep 1; do
-        kubectl -n ${NAMESPACE:-default} get --no-headers pvc 2>/dev/null | awk 'BEGIN{i=1}{if($2=="Bound"){i=0}}END{exit i}' && break
+        kubectl -n ${NAMESPACE:-default} get --no-headers pvc 2>/dev/null | awk 'BEGIN{i=0}{if($2!="Bound"){i=1}}END{exit i}' && break
     done
     printf "\rWait for pvc to be ready... ok\n"
 }
