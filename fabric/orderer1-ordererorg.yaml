@@ -113,6 +113,26 @@ spec:
       port: 7050
       targetPort: 7050
       nodePort: 30002
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: orderer1-metrics
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/app-metrics: 'true'
+    prometheus.io/app-metrics-port: '9100'
+    prometheus.io/app-metrics-path: '/metrics'
+spec:
+  selector:
+    app: hyperledger
+    role: orderer
+    orderer-id: orderer1
+    org: ordererorg
+  type: ClusterIP
+  ports:
     - name: metrics-endpoint
       protocol: TCP
       port: 9100
