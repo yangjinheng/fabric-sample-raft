@@ -5,7 +5,7 @@
 NAMESPACE=${2:-default}
 
 # 部署文件目录
-MANIFESTS=../manifests
+MANIFESTS=../fabric
 
 # NFS 根目录位置
 # NFS 配置：/data *(rw,fsid=0,sync,no_subtree_check,no_auth_nlm,insecure,no_root_squash)
