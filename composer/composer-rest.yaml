@@ -42,7 +42,7 @@ spec:
             - containerPort: 3000
           volumeMounts:
             - name: resources
-              subPath: composer/data
+              subPath: .composer
               mountPath: /home/composer/.composer
             - name: resources
               mountPath: /data

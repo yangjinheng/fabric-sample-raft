@@ -25,13 +25,22 @@ services=(
     cli:cli.yaml
 )
 
+# 等待 PVC 全部绑定
+function wait_pvc() {
+    printf "Wait for pvc to be ready..."
+    while sleep 1; do
+        kubectl -n ${NAMESPACE:-default} get --no-headers pvc 2>/dev/null | awk 'BEGIN{i=1}{if($2=="Bound"){i=0}}END{exit i}' && break
+    done
+    printf "\rWait for pvc to be ready... ok\n"
+}
+
 # 等待 POD 到达某状态返回名称
 function wait_pod() {
     if [[ -z $1 || -z $2 ]]; then
         echo "Usage: wait_pod <POD_NAME_PATTERN> <STATUS>" ; exit 1
     fi
-    while sleep 0.5; do
-        kubectl -n ${NAMESPACE:-default} get pods 2>/dev/null | awk 'BEGIN{i=1}{if($1~/'$1'/&&$3=="'$2'"){print $1;i=0}}END{exit i}' && break
+    while sleep 1; do
+        kubectl -n ${NAMESPACE:-default} get --no-headers pods 2>/dev/null | awk 'BEGIN{i=1}{if($1~/'$1'/&&$3=="'$2'"){print $1;i=0}}END{exit i}' && break
     done
 }
 
@@ -43,6 +52,8 @@ function pvc() {
     for service in $MANIFESTS/pvc/*; do
         kubectl apply -f <(sed s/default/$NAMESPACE/ ${service})
     done
+
+    wait_pvc
 
     kubectl -n $NAMESPACE get pvc
 }

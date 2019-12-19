@@ -4,6 +4,7 @@
 2.  composer 可能必须运行于 nodejs 8 这个版本，（待验证）
 3.  cli、playground、reserver 数据持久化目录都为 /home/composer/.composer
 4.  注意 /home/composer/.composer 目录的权限，为 1000.1000
+5.  由于 cli、playground、reserver 与 fabric 网络通信时候需要建立 tls 连接，所以需要 tls 证书的访问权限
 
 ## 管理员访问卡
 
@@ -16,11 +17,11 @@ chown -R 1000.1000 /data/default/composer/
 2.  准备每个组织的管理员用户证书和私钥
 
 ~~~bash
-export ORG1_CERT=/data/composer/org1/Admin@org1.example.com-cert.pem
-export ORG1_KEY=/data/composer/org1/d9fcc4030479fc24e21480f8a087ce968ed80a0379aa9d4235281b2eaa47f80e_sk
+export ORG1_CERT=/data/composer/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem
+export ORG1_KEY=/data/composer/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/d9fcc4030479fc24e21480f8a087ce968ed80a0379aa9d4235281b2eaa47f80e_sk
 
-export ORG2_CERT=/data/composer/org2/Admin@org2.example.com-cert.pem
-export ORG2_KEY=/data/composer/org2/63d4314eaf8b7145b32e59908be02b42ff8038dcf0057e269d30d4db3ea664c1_sk
+export ORG2_CERT=/data/composer/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/admincerts/Admin@org2.example.com-cert.pem
+export ORG2_KEY=/data/composer/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/63d4314eaf8b7145b32e59908be02b42ff8038dcf0057e269d30d4db3ea664c1_sk
 ~~~
 
 3.  生成管理员的访问卡
