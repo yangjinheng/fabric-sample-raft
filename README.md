@@ -1,40 +1,43 @@
+## 端口规划
+
+*   Orderer
+
+| 服务     | 端口  |
+| -------- | ----- |
+| orderer0 | 30001 |
+| orderer1 | 30002 |
+| orderer2 | 30003 |
+
+*   Org1
+
+| 服务       | 端口                  |
+| ---------- | --------------------- |
+| ca-org1    | 30100                 |
+| peer0-org1 | 30101 / 30102 / 30103 |
+| peer1-org1 | 30104 / 30105 / 30106 |
+| peer2-org1 | 30107 / 30108 / 30109 |
+| peer3-org1 | 30110 / 30111 / 30112 |
+
+*   Org2
+
+| 服务       | 端口                  |
+| ---------- | --------------------- |
+| ca-org2    | 30200                 |
+| peer0-org2 | 30201 / 30202 / 30203 |
+| peer1-org2 | 30204 / 30205 / 30206 |
+| peer2-org2 | 30207 / 30208 / 30209 |
+| peer3-org2 | 30210 / 30211 / 30212 |
+
+## 启动顺序
+
+~~~bash
+1.  Namespace
+2.  PVC
+3.  Orderer
+4.  Peer
+5.  Ca
+6.  Cli
 ~~~
-├── README.md
-├── default
-│   └── resources
-│       ├── chaincodes
-│       ├── channel-artifacts
-│       ├── composer
-│       ├── configtx.yaml
-│       ├── crypto-config
-│       ├── crypto-config.yaml
-│       ├── explorer-artifacts
-│       ├── generate-crypts.sh
-│       └── generate-tx-files.sh
-├── docs
-│   └── port_plan.txt
-├── manifests
-│   ├── ca-org1.yaml
-│   ├── ca-org2.yaml
-│   ├── cli.yaml
-│   ├── fabric-explorer.yaml
-│   ├── namespace.yaml
-│   ├── orderer0-ordererorg.yaml
-│   ├── orderer1-ordererorg.yaml
-│   ├── orderer2-ordererorg.yaml
-│   ├── peer0-org1.yaml
-│   ├── peer0-org2.yaml
-│   ├── peer1-org1.yaml
-│   ├── peer1-org2.yaml
-│   └── pvc
-│       ├── orderer-pvc.yaml
-│       ├── org1-pvc.yaml
-│       ├── org2-pvc.yaml
-│       └── resources.yaml
-└── scripts
-    ├── controller.sh
-    ├── create_join_channel.sh
-    ├── install_example02.sh
-    └── install_explorer.sh
-~~~
+
+
 
