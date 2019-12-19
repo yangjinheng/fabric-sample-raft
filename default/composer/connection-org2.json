@@ -73,7 +73,7 @@
         "orderer0.example.com": {
             "url": "grpcs://orderer0:7050",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer0.example.com"
@@ -82,7 +82,7 @@
         "orderer1.example.com": {
             "url": "grpcs://orderer1:7050",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer1.example.com"
@@ -91,7 +91,7 @@
         "orderer2.example.com": {
             "url": "grpcs://orderer2:7050",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer2.example.com"
@@ -102,7 +102,7 @@
         "peer0.org1.example.com": {
             "url": "grpcs://peer0-org1:7051",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.org1.example.com"
@@ -111,7 +111,7 @@
         "peer1.org1.example.com": {
             "url": "grpcs://peer1-org1:7051",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.org1.example.com"
@@ -120,7 +120,7 @@
         "peer0.org2.example.com": {
             "url": "grpcs://peer0-org2:7051",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.org2.example.com"
@@ -129,7 +129,7 @@
         "peer1.org2.example.com": {
             "url": "grpcs://peer1-org2:7051",
             "tlsCACerts": {
-                "path": "/data/composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt"
+                "path": "/data/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.org2.example.com"
