@@ -166,3 +166,12 @@ composer network ping --card bob@transfer-example
 composer network list --card bob@transfer-example
 ~~~
 
+7.  升级智能合约
+
+~~~bash
+composer network install --card PeerAdmin@fabric-network-org1 --archiveFile ./transfer-example@0.0.6.bna --option npmrcFile=./ali-npmrc
+composer network install --card PeerAdmin@fabric-network-org2 --archiveFile ./transfer-example@0.0.6.bna --option npmrcFile=./ali-npmrc
+
+composer network upgrade --card PeerAdmin@fabric-network-org1 --networkName transfer-example --networkVersion 0.0.6
+~~~
+

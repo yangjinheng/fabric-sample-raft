@@ -32,7 +32,7 @@ spec:
             runAsUser: 1000
           env:
             - name: COMPOSER_CARD
-              value: bob@baas-network
+              value: bob@transfer-example
             - name: COMPOSER_NAMESPACES
               value: never
           envFrom:
