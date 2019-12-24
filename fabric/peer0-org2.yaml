@@ -117,6 +117,8 @@ spec:
               value: hyperledger/fabric-baseos:amd64-0.4.14
             - name: CORE_CHAINCODE_NODE_RUNTIME
               value: hyperledger/fabric-baseimage:amd64-0.4.14
+            - name: CORE_CHAINCODE_NODE_RUNTIME_REGISTRY
+              value: https://registry.npm.taobao.org
             - name: CORE_CHAINCODE_STARTUPTIMEOUT
               value: "1800s"
             - name: CORE_CHAINCODE_LOGGING_LEVEL
